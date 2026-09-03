@@ -93,6 +93,21 @@ const data = {
       ],
     },
     {
+      title: "Maintenance",
+      url: "/maintenance",
+      icon: Wrench,
+      items: [
+        {
+          title: "Parts & Service",
+          url: "/maintenance",
+        },
+        {
+          title: "Cost Summary",
+          url: "/maintenance#stats",
+        },
+      ],
+    },
+    {
       title: "Users & Owners",
       url: "/users",
       icon: Users,
@@ -142,6 +157,7 @@ const data = {
 const quickActions = [
   { name: "Add Fuel Refill", url: "/fuel?new=1", icon: Plus },
   { name: "Log Oil Drain", url: "/mobil?new=1", icon: Wrench },
+  { name: "Add Maintenance", url: "/maintenance?new=1", icon: History },
   { name: "Add Vehicle", url: "/fleet?new=1", icon: Truck },
   { name: "Add User", url: "/users?new=1", icon: UserPlus },
   { name: "Buy Fiber", url: "/fiber?new=1", icon: Cable },

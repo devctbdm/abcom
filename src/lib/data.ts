@@ -1,10 +1,12 @@
 import { db } from "@/db";
 import {
   fuelLogs,
+  maintenance,
   oilChanges,
   staff,
   vehicles,
   type FuelLogRow,
+  type MaintenanceRow,
   type OilChangeRow,
   type StaffRow,
   type VehicleRow,
@@ -59,6 +61,32 @@ export async function getOilChanges(
       .from(oilChanges)
       .where(eq(oilChanges.vehicleId, vehicleId))
       .orderBy(desc(oilChanges.odometer));
+  } catch {
+    return [];
+  }
+}
+
+export async function getMaintenance(
+  vehicleId: number,
+  startDate?: string,
+  endDate?: string,
+): Promise<MaintenanceRow[]> {
+  try {
+    const conditions = [eq(maintenance.vehicleId, vehicleId)];
+
+    if (startDate) {
+      conditions.push(gte(maintenance.date, startDate));
+    }
+
+    if (endDate) {
+      conditions.push(lte(maintenance.date, endDate));
+    }
+
+    return await db
+      .select()
+      .from(maintenance)
+      .where(and(...conditions))
+      .orderBy(desc(maintenance.date));
   } catch {
     return [];
   }

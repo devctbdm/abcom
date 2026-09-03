@@ -124,6 +124,26 @@ export const oilChanges = pgTable("oil_changes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const maintenanceTypeEnum = pgEnum("maintenance_type", [
+  "PARTS",
+  "SERVICE",
+]);
+
+export const maintenance = pgTable("maintenance", {
+  id: serial("id").primaryKey(),
+  vehicleId: integer("vehicle_id")
+    .notNull()
+    .references(() => vehicles.id, { onDelete: "cascade" }),
+  type: maintenanceTypeEnum("type").notNull(), // PARTS or SERVICE
+  date: date("date").notNull(),
+  time: timestamp("time"), // optional time of service
+  description: text("description").notNull(), // what was done
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(), // bill amount in taka
+  shopName: text("shop_name"), // where service/parts were purchased
+  note: text("note"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type FiberClientRow = typeof fiberClients.$inferSelect;
 export type FiberPurchaseRow = typeof fiberPurchases.$inferSelect;
 export type FiberUsageRow = typeof fiberUsages.$inferSelect;
@@ -131,6 +151,8 @@ export type StaffRow = typeof staff.$inferSelect;
 export type VehicleRow = typeof vehicles.$inferSelect;
 export type FuelLogRow = typeof fuelLogs.$inferSelect;
 export type OilChangeRow = typeof oilChanges.$inferSelect;
+export type MaintenanceRow = typeof maintenance.$inferSelect;
+export type MaintenanceType = (typeof maintenanceTypeEnum.enumValues)[number];
 
 export const VEHICLE_CATEGORIES = ["BIKE", "CAR"] as const;
 export type VehicleCategory = (typeof VEHICLE_CATEGORIES)[number];
